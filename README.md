@@ -61,31 +61,6 @@ statistics vlan 1201
 
 ---
 
-## Шаг 3. «V» — фильтр пакетов — `switch pktfilter show 8`
-
-```
-switch pktfilter show 8
-```
-
-Смотрим колонку **igmp** и **dhcp**, и режим **PPPoE-Only**.
-
-**Как читать (легенда: V = pass, `-` = filter out, # = don't care):**
-- **igmp = V** — join-запросы проходят. Обязательно для IPTV.
-- **dhcp = V** — приставка получит IP.
-- **ip/arp/pppoe = V** — норм.
-- **PPPoE-Only = D** — режим «только PPPoE» выключен. **Если `E` (включён)** — весь не-PPPoE трафик (в т.ч. IPTV multicast) режется → чёрный экран. Выключить:
-  ```
-  switch pktfilter set 8 none
-  ```
-- Если `igmp = -` (заблокирован) → join не проходит. Исправить:
-  ```
-  switch pktfilter set 8 none
-  ```
-  (или выставить нужные флаги, если политика требует).
-
-**Пример (наш порт 8):** `pppoe/ip/arp/dhcp/igmp = V`, `PPPoE-Only = D` → фильтр чист ✅, Шаг 4.
-
----
 
 ## Шаг 4. IGMP snooping group — `statistics igmpsnoop port group 8`
 
