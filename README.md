@@ -23,7 +23,7 @@ statistics mac 8
 
 **Пример (наш порт 8):**
 ```
-1201  ec:4c:4d:e8:41:c0   ← приставка в IPTV VLAN ✅
+1201  ec:4c:4d:e8:41:c0   ← приставка в IPTV VLAN
 1308  ec:4c:4d:e5:68:c2   ← модем TR-069
 2846  ec:4c:4d:e5:68:c1   ← модем PPPoE
 ```
@@ -95,7 +95,7 @@ statistics port 8 1 32
 Снять **дважды** с паузой 1–2 мин, сравнить.
 
 **Как читать:**
-- `tx packets`/`tx cells` **растут**, `tx rate` высокий, `errors 0` → multicast к абоненту идёт непрерывно. ✅ Со стороны DSLAM всё, идём к абоненту (модем/кабель/приставка).
+- `tx packets`/`tx cells` **растут**, `tx rate` высокий, `errors 0` → multicast к абоненту идёт непрерывно. Со стороны DSLAM всё, идём к абоненту (модем/кабель/приставка).
 - `tx rate ≈ 0`, пакеты не растут → multicast не доходит до порта: mvlan/агрегация/upstream (проверить `switch igmpsnoop mvlan show *`, `statistics vlan`, uplink).
 - `rx packets` растут, `tx` нет → join идёт, ответного потока нет — upstream multicast.
 - `errors` растут → проблема линии/PVC (тогда к профилю/линии).
