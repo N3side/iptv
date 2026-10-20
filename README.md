@@ -1,7 +1,5 @@
 Если артефакты/зависания, то сменить в профайле задержку на 255 255. pvc нет смысла пересоздавать
 
-Если просто не работает, смотрим маки, влан, v 
-
 
 ## Алгоритм «телевизор перестал работать» — подробно
 
@@ -62,7 +60,7 @@ statistics vlan 1201
 ---
 
 
-## Шаг 4. IGMP snooping group — `statistics igmpsnoop port group 8`
+## Шаг 3. IGMP snooping group — `statistics igmpsnoop port group 8`
 
 ```
 statistics igmpsnoop port group 8
@@ -88,7 +86,7 @@ statistics igmpsnoop port group 8
 
 ---
 
-## Шаг 5 (дополнение). Трафик на IPTV-PVC — `statistics port 8 1 32`
+## Шаг 4 (дополнение). Трафик на IPTV-PVC — `statistics port 8 1 32`
 
 ```
 statistics port 8 1 32
@@ -133,18 +131,6 @@ statistics port 8 1 32
 ```
 
 **Короткое правило:** MAC → VLAN → V (pktfilter) → igmpsnoop group. Где первым «отвалилось» — там и причина. Если все четыре ок и трафик `tx` растёт — DSLAM чист, проблема у абонента (модем: bridge/VLAN/IGMP proxy; кабель; приставка).
-
----
-
-## Про артефакты/зависания (для полноты, как вы сказали)
-
-- **Артефакты/зависания** → сменить в профиле **задержку на `255 255`** (interleave), **PVC не пересоздавать**. То есть профиль с `interleave=255,255` — максимальная коррекция импульсных помех. Применить:
-  ```
-  adsl profile set <имя> interleave=255,255 <up> <down>
-  adsl profile map 8 <имя> auto
-  ```
-  ⚠️ Порт «only IPTV» — согласовать. После смены проверить `statistics adsl show 8` (error second) и жалобы.
-- **Просто не работает** → алгоритм выше (MAC → VLAN → V → igmpsnoop group), PVC не трогать.
 
 ---
 
